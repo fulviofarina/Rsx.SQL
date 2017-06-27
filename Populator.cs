@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Data.Linq;
+using System.Transactions;
 
 namespace Rsx.SQL
 {
@@ -47,7 +48,7 @@ namespace Rsx.SQL
                     destiny.DeleteDatabase();
                     // destiny.Connection.Open();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
 
@@ -56,21 +57,46 @@ namespace Rsx.SQL
             return destiny.DatabaseExists();
         }
 
-       
+
 
         /// <summary>
         /// Inserts on Submits a SQL DataTable from one place to another
         /// </summary>
         /// <param name="dt"> </param>
         /// <param name="ita"></param>
-        public static void InsertDataTable(ref ITable dt, ref ITable ita)
+        public static void InsertDataTable(ref ITable dt, ref ITable ita, string name)
         {
+
+/*
+            using (System.Transactions.TransactionScope trans = new TransactionScope())
+            {
+                using (YourDataContext context = new YourDataContext())
+                {
+                    context.ExecuteCommand("SET IDENTITY_INSERT MyTable ON");
+
+                    context.ExecuteCommand("yourInsertCommand");
+
+                    context.ExecuteCommand("SET IDENTITY_INSERT MyTable OFF");
+                }
+                trans.Complete();
+            }
+
+
+
+
+
+    */
+
+      //      ita.Context.ExecuteCommand("SET IDENTITY_INSERT "+ name+ " ON");
             foreach (var i in dt)
             {
+               
                 ita.InsertOnSubmit(i);
             }
 
             ita.Context.SubmitChanges();
+
+       //     ita.Context.ExecuteCommand("SET IDENTITY_INSERT " + name + " OFF");
         }
 
 
@@ -84,7 +110,7 @@ namespace Rsx.SQL
             string localdbexpressPack = SQL_LOCALDB_PACK32;
             if (is64) localdbexpressPack = SQL_LOCALDB_PACK64;
             System.IO.File.WriteAllText(prerequisitePath + "sqlInstall.bat", "msiexec /package \"" + prerequisitePath + localdbexpressPack + "\" /le log.txt");
-            Rsx.Dumb.IO.Process("cmd", "/c " + "sqlInstall.bat", prerequisitePath);
+            Rsx.Dumb.IO.Process("cmd", "/c " + "sqlInstall.bat", prerequisitePath,true);
             string logFile = System.IO.File.ReadAllText( prerequisitePath + "log.txt");
 
             return logFile;
@@ -97,7 +123,7 @@ namespace Rsx.SQL
         public static bool RestartSQLLocalDBServer()
         {
             // string start = "start ";
-            bool hide = false;
+            bool hide = true;
             bool is64 = Environment.Is64BitOperatingSystem;
 
             string path = string.Empty;
@@ -116,7 +142,7 @@ namespace Rsx.SQL
             path = SQL_LOCALDB_EXE;
             string tmp = "\\Temp\\";
             string content = "start /B " + path + " start";
-            string batFile = "sql.bat";
+            string batFile = "sqlStart.bat";
             string batPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + tmp;
             System.IO.File.WriteAllText(batPath + batFile, content);
 
