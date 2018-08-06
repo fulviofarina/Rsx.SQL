@@ -12,7 +12,7 @@ namespace Rsx.SQL
             public string Enlist = "False";
             public string EnlistTag = "Enlist";
             public string Login;
-            public string LoginTag = "UserID";
+            public string LoginTag = "User ID";
             public string Password;
             public string PasswordTag = "Password";
             public string Pooling = "False";
@@ -23,7 +23,7 @@ namespace Rsx.SQL
             public string TimeoutTag = "Connect Timeout";
             public string WindowsIdentityTag = "Integrated Security";
             public string WindowsIdentityValue = "True";
-            private IList<dynamic> boxes = null;
+            private IList<object> boxes = null;
             private SqlConnection sql = null;
             public string DB
             {
@@ -40,8 +40,10 @@ namespace Rsx.SQL
                     string formed = string.Empty;
                 
                     //use the tags
-                    foreach (dynamic t in boxes)
+                    foreach (object box in boxes)
                     {
+                        dynamic t = box;
+
                         if (string.IsNullOrEmpty(t.Text)) continue;
 
                         formed += t.Tag.ToString() + "=" + t.Text + ";";
@@ -73,7 +75,7 @@ namespace Rsx.SQL
                 }
             }
             // private string "Integrated Security = True"
-            public void SetUI(ref IList<dynamic> Boxes)
+            public void SetUI(ref IList<object> Boxes)
             {
                 boxes = Boxes;
             }

@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.SqlServer.Management.Smo;
 using Microsoft.SqlServer.Management.Smo.Wmi;
 using Microsoft.Win32;
+using System.Data.SqlClient;
 
 namespace Rsx.SQL
 {
@@ -14,6 +15,33 @@ namespace Rsx.SQL
     /// </summary>
     public partial class SQL
     {
+
+        public static string ReplaceStringForDeveloper(string localDB)
+        {
+            string catalogCmd = "Catalog=";
+
+            //return a copy of the name for for Developer purposes
+            return localDB.Replace(catalogCmd, catalogCmd + "Dev");
+        }
+
+
+        public static bool IsServerConnected(string connectionString)
+        {
+            using (var l_oConnection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    l_oConnection.Open();
+                    return true;
+                }
+                catch (SqlException)
+                {
+                    return false;
+                }
+            }
+        }
+
+
         public static string Exception;
 
         /// <summary>

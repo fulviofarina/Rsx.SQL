@@ -9,11 +9,7 @@
             "\n\nClick YES to install an alternate Lite version (LocalDB).\n\n" +
             "Click NO to use the current SQL Server instance";
 
-        protected static string CONNECTION_CHANGE = "Would you like to manually modify the current database connection string?\n\n"
-                    + "This is not necessary unless a remote server redirection is desired";
-
-        protected static string CONNECTION_CHANGE_TITLE = "Change connection string?";
-        protected static string LOCALDB_DEFAULT_PATH = "(localdb)\\MSSQLLocalDB";
+         protected static string LOCALDB_DEFAULT_PATH = "(localdb)\\MSSQLLocalDB";
         protected static string SQL_DENIED_INSTALL = "\n\nThe user denied the SQL Server (LocalDB) installation";
         protected static string SQL_DENIED_INSTALL_TITLE = "Cannot continue without a SQL Server connection";
         protected static string SQL_INSTALL_ASK = "Would you like to install the SQL Server (LocalDB)?";
