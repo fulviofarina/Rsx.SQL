@@ -5,6 +5,30 @@ namespace Rsx.SQL
 {
     public partial class SQLUI
     {
+
+        public static bool AskToUpdateSQLConnectionString()
+        {
+            DialogResult result = MessageBox.Show(NO_CONNECTION, NO_CONNECTION_TITLE, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (result == DialogResult.OK) return true;
+            else return false;
+        }
+
+        protected static string NO_CONNECTION = "The default database connection is not properly configured.\n\n" +
+          "The reasons might be:\n\n" +
+             "- You are a first-time user\n\n" +
+          "- The database does not exist\n\n" +
+          "- The SQL Server is down/stopped or not installed\n\n" +
+          // "3) The SQL Server is not installed\n\n" +
+          "- The connection parameters are wrong.\n\n\n" +
+          "This program will attempt to:\n\n" +
+          //"Perform basic connection routines,\n"+
+          "Restart the server,\n\n" +
+          "Detect other SQL Server instances (when present),\n\n" +
+          "Reinstall the SQL Server and database (when applicable and after confirmation),\n\n" +
+          "Offer you to change the connection parameters\n\n\n";
+
+        protected static string NO_CONNECTION_TITLE = "SQL Server Connection Wizard by F. Farina Arboccò";
+
         /// <summary>
         /// Finds a SQL Server instances and installs if necessary with UI Otherwise gives back the
         /// default LocalDB path
